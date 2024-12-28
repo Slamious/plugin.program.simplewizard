@@ -1,24 +1,25 @@
-import xbmc
-import xbmcgui
-import xbmcaddon
 import json
 import base64
+from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
-from .maintenance import clear_packages_startup
+import xbmc
+import xbmcgui
 from uservar import buildfile, notify_url
+from .maintenance import clear_packages_startup
 from .addonvar import setting, setting_set, addon_name, isBase64, headers, dialog, local_string, addon_id, gui_save_default
 from .build_install import restore_binary, binaries_path
+from .addons_enable import enable_addons
+from .save_data import backup_gui_skin
+from ..GUIcontrol import notify
 
-current_build = setting('buildname')
-try:
-    current_version = float(setting('buildversion')) 
-except:
-    current_version = 0.0
+CURRENT_BUILD = setting('buildname')
+CURRENT_VERSION = setting('buildversion')
+
 
 class Startup:
     
     def check_updates(self):
-           if current_build == 'No Build Installed':
+           if CURRENT_BUILD == 'No Build Installed':
                nobuild = dialog.yesnocustom(addon_name, 'There is currently no build installed.\nWould you like to install one now?', 'Remind Later')
                if nobuild == 1:
                    xbmc.executebuiltin(f'ActivateWindow(10001, "plugin://{addon_id}/?mode=1",return)')
@@ -30,70 +31,80 @@ class Startup:
                response = self.get_page(buildfile)
            except:
                return
-           version = 0.0
-           try:
+           version = ''
+           if '"builds"' in response or "'builds'" in response:
                builds = json.loads(response)['builds']
                for build in builds:
-                       if build.get('name') == current_build:
-                           version = float(build.get('version'))
-                           break
-           except:
+                   if build.get('name') == CURRENT_BUILD:
+                       version = str(build.get('version'))
+                       break
+           elif '<version>' in response:
                builds = ET.fromstring(response)
                for tag in builds.findall('build'):
-                       if tag.find('name').text == current_build:
-                           version = float(tag.find('version').text)
+                       if tag.find('name').text == CURRENT_BUILD:
+                           version = str(tag.find('version').text)
                            break
-           if version > current_version and setting('update_passed') != 'true':
-               update_available = xbmcgui.Dialog().yesnocustom(addon_name, local_string(30047) + ' ' + current_build +' ' + local_string(30048) + '\n' + local_string(30049) + ' ' + str(current_version) + '\n' + local_string(30050) + ' ' + str(version) + '\n' + local_string(30051), 'Remind Later')
+           if version > CURRENT_VERSION and setting('update_passed') != 'true':
+               update_available = xbmcgui.Dialog().yesnocustom(
+                   addon_name,
+                   f'{local_string(30047)} {CURRENT_BUILD} {local_string(30048)}\n{local_string(30049)} {CURRENT_VERSION}\n{local_string(30050)} {version}\n{local_string(30051)}',
+                   'Remind Later'
+               )
+               
                if update_available == 1:
-                   xbmc.executebuiltin(f'ActivateWindow(10001, "plugin://{addon_id}/?mode=1",return)')
+                   xbmc.executebuiltin(
+                       f'ActivateWindow(10001, "plugin://{addon_id}/?mode=1",return)'
+                   )
                elif update_available == 0:
                    setting_set('update_passed', 'true')
-               else:
-                   return
-           else:
-               return
-
+           elif version == CURRENT_VERSION and setting('update_passed') == 'true':
+               setting_set('update_passed', 'false')
+               
     def file_check(self, bfile):
         if isBase64(bfile):
             return base64.b64decode(bfile).decode('utf8')
-        else:
-            return bfile
+        return bfile
             
     def get_page(self, url):
-           from urllib.request import Request,urlopen
            req = Request(self.file_check(url), headers = headers)
            return urlopen(req).read()
         
     def save_menu(self):
-        save_items = []
-        choices = ["Trakt & Debrid Data", "YouTube API Keys", "Favourites", "Advanced Settings", "Sources"]
-        save_select = dialog.multiselect(addon_name + ' - ' + local_string(30052),choices, preselect=[])  # Select Save Items
-        if save_select == None:
+        choices = [
+            'Trakt & Debrid Data',
+            'YouTube API Keys',
+            'Favourites',
+            'Advanced Settings',
+            'Sources'
+        ]
+        save_select = dialog.multiselect(
+            f'{addon_name} - {local_string(30052)}',
+            choices,
+            preselect=[]
+        )  # Select Save Items
+        if save_select is None:
             return
-        else:
-            for index in save_select:
-                save_items.append(choices[index])
+        save_items = [choices[index] for index in save_select]
                 
         if 'Trakt & Debrid Data' in save_items:
-            setting_set('savedata','true')
+            setting_set('savedata', 'true')
         else:
-            setting_set('savedata','false')
+            setting_set('savedata', 'false')
             
         if 'YouTube API Keys' in save_items:
-            setting_set('saveyoutube','true')
+            setting_set('saveyoutube', 'true')
         else:
-            setting_set('saveyoutube','false')
+            setting_set('saveyoutube', 'false')
             
         if 'Favourites' in save_items:
-            setting_set('savefavs','true')
+            setting_set('savefavs', 'true')
         else:
-            setting_set('savefavs','false')
+            setting_set('savefavs', 'false')
             
         if 'Advanced Settings' in save_items:
-            setting_set('saveadvanced','true')
+            setting_set('saveadvanced', 'true')
         else:
-            setting_set('saveadvanced','false')
+            setting_set('saveadvanced', 'false')
         
         if 'Sources' in save_items:
             setting_set('savesources', 'true')
@@ -105,32 +116,30 @@ class Startup:
     def notify_check(self):
         if notify_url in ('http://CHANGEME', 'http://slamiousproject.com/wzrd/notify19.txt', ''):
             return
-        from ..GUIcontrol import notify
+        
         info = notify.get_notify()
         current_notify = int(setting('notifyversion'))
         notify_version = info[0]
         message = info[1]
-        if not setting('firstrunNotify')=='true' or notify_version > current_notify:
+        if setting('firstrunNotify') != 'true' or notify_version > current_notify:
             notify.notification(message)
             setting_set('firstrunNotify', 'true')
-            setting_set('notifyversion', str(notify_version))  
+            setting_set('notifyversion', str(notify_version))
     
     def run_startup(self):
-        if not setting('firstrunSave')=='true':
+        if setting('firstrunSave') != 'true':
             self.save_menu()
             xbmc.sleep(2000)
         if setting('firstrun') == 'true':
-            from resources.lib.modules.addons_enable import enable_addons
-            from .save_data import backup_gui_skin
             enable_addons()
             backup_gui_skin(gui_save_default)
             setting_set('firstrun', 'false')
         else:
-            if setting('autoclearpackages')=='true':
+            if setting('autoclearpackages') == 'true':
                 clear_packages_startup()
             xbmc.sleep(1000)
             self.notify_check()
-            xbmc.sleep(3000)      #Delay Build Update Notification
+            xbmc.sleep(3000)  # Delay Build Update Notification
             self.check_updates()
         if binaries_path.exists():
             restore_binary()
