@@ -36,11 +36,11 @@ def resolve_rumble(url: str) -> str:
         response = requests.get(link, headers=HEADERS, timeout=10).json()
         mp4 = response['ua']['mp4']
         mp4_sorted = dict(sorted(mp4.items(), key=lambda item: int(item[0]), reverse=True))
-        first_item_url = next(iter(mp4_sorted.values()))["url"]
+        first_item_url = next(iter(mp4_sorted.values()))['url']
         return first_item_url
 
 def resolve_youtube(url: str) -> str:
-    pattern = r"youtu\.be/([a-zA-Z0-9_-]+)"
+    pattern = r'youtu\.be/([a-zA-Z0-9_-]+)'
     match = re.search(pattern, url)
     if match:
         video_id = match.group(1)
