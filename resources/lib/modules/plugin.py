@@ -1,11 +1,10 @@
+import sys
+import os
 import xbmc
 import xbmcplugin
 import xbmcgui
-import xbmcvfs
-import sys
-import os
 from .params import Params
-from .utils import play_video
+from .play_video import play_video
 from .menus import main_menu, build_menu, submenu_maintenance, backup_restore, restore_gui_skin
 from .authorize import authorize_menu, authorize_submenu
 from .build_install import build_install
@@ -16,11 +15,14 @@ from uservar import notify_url
 from .save_data import restore_gui, restore_skin, backup_gui_skin
 from .backup_restore import backup_build, restore_menu, restore_build, get_backup_folder, reset_backup_folder
 
-handle = int(sys.argv[1])
+try:
+    HANDLE = int(sys.argv[1])
+except IndexError:
+    HANDLE = 0
 
 def router(paramstring):
     p = Params(paramstring)
-    xbmc.log(str(p.get_params()),xbmc.LOGDEBUG)
+    xbmc.log(str(p.get_params()), xbmc.LOGDEBUG)
     
     name = p.get_name()
     name2 = p.get_name2()
@@ -28,10 +30,9 @@ def router(paramstring):
     url = p.get_url()
     mode = p.get_mode()
     icon = p.get_icon()
-    fanart = p.get_fanart()
     description = p.get_description()
     
-    xbmcplugin.setContent(handle, 'files')
+    xbmcplugin.setContent(HANDLE, 'files')
 
     if mode is None:
         main_menu()
@@ -134,4 +135,4 @@ def router(paramstring):
         message = notify.get_notify()[1]
         notify.notification(message)
         
-    xbmcplugin.endOfDirectory(handle)
+    xbmcplugin.endOfDirectory(HANDLE)
