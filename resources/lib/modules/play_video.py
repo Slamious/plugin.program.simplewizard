@@ -6,12 +6,16 @@ import xbmcgui
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'
 HEADERS = {"User-Agent": USER_AGENT}
+SUPPORTED_IMAGES = xbmc.getSupportedMedia('picture').split('|')
 
 def play_video(name: str, url: str, icon:str, description:str):
     if 'rumble.com' in url:
         link = resolve_rumble(url)
     elif 'youtu.be' in url:
         link = resolve_youtube(url)
+    elif any(url.lower().endswith(x.strip()) for x in SUPPORTED_IMAGES):
+        xbmc.executebuiltin(f'ShowPicture({url})')
+        return True
     else:
         link = url
     if not link:
