@@ -5,7 +5,7 @@ import xbmc
 import xbmcgui
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'
-HEADERS = {"User-Agent": USER_AGENT}
+HEADERS = {'User-Agent': USER_AGENT}
 SUPPORTED_IMAGES = xbmc.getSupportedMedia('picture').split('|')
 
 def play_video(name: str, url: str, icon:str, description:str):
