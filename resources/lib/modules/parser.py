@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import json
+import re
 from .downloader import Downloader
 
 class Parser:
@@ -35,3 +36,42 @@ class Parser:
             return d.get_urllib()
         else:
             return open(self.url).read()
+
+class XmlParser:
+    def __init__(self, xml_content):
+        self.xml_content = xml_content
+
+    def parse_builds(self):
+        build_pattern = re.compile(r"<build>(.*?)</build>", re.DOTALL)
+        sub_element_patterns = {
+            "name": re.compile(r"<name>(.*?)</name>"),
+            "version": re.compile(r"<version>(.*?)</version>"),
+            "url": re.compile(r"<url>(.*?)</url>"),
+            "icon": re.compile(r"<icon>(.*?)</icon>"),
+            "fanart": re.compile(r"<fanart>(.*?)</fanart>"),
+            "description": re.compile(r"<description>(.*?)</description>"),
+            "preview": re.compile(r"<preview>(.*?)</preview>")
+        }
+        return self.parse(build_pattern, sub_element_patterns)
+    
+    def parse_videos(self):
+        video_pattern = re.compile(r"<video>(.*?)</video>", re.DOTALL)
+        sub_element_patterns = {
+            "name": re.compile(r"<name>(.*?)</name>"),
+            "url": re.compile(r"<url>(.*?)</url>"),
+            "icon": re.compile(r"<icon>(.*?)</icon>"),
+            "fanart": re.compile(r"<fanart>(.*?)</fanart>"),
+            "description": re.compile(r"<description>(.*?)</description>")
+        }
+        return self.parse(video_pattern, sub_element_patterns)
+        
+    def parse(self, main_pattern, sub_patterns: list):
+        items = main_pattern.findall(self.xml_content)
+        parsed_items = []
+        for item in items:
+            data = {}
+            for key, pattern in sub_patterns.items():
+                match = pattern.search(item)
+                data[key] = match.group(1) if match else ''
+            parsed_items.append(data)
+        return parsed_items
