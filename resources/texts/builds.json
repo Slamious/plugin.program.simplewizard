@@ -6,7 +6,8 @@
 			"url": "http://",
 			"icon": "http://",
 			"fanart": "http://",
-			"description": "The first build. You need a comma after the curly bracket if this is not the last build."
+			"description": "The first build. You need a comma after the curly bracket if this is not the last build.",
+			"preview": "http://"
 		},
 		{
 			"name": "Build 2",
@@ -14,7 +15,8 @@
 			"url": "http://",
 			"icon": "http://",
 			"fanart": "http://",
-			"description": "The second build. No comma after the curly bracket if this is the last build."
+			"description": "The second build. No comma after the curly bracket if this is the last build.",
+			"preview": "http://"
 		}
 	]
 }
