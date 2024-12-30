@@ -1,6 +1,7 @@
 import sys
 import re
-import requests
+import json
+from urllib.request import Request, urlopen
 import xbmc
 import xbmcgui
 
@@ -27,13 +28,13 @@ def play_video(name: str, url: str, icon:str, description:str):
 
 def resolve_rumble(url: str) -> str:
     _id = ''
-    response = requests.get(url, headers=HEADERS, timeout=10).text
+    response = urlopen(Request(url, headers=HEADERS)).read().decode('utf-8')
     pattern = r'"video":"(.+?)"'
     match = re.search(pattern, response)
     if match:
         _id = match.group(1)
         link = f'https://rumble.com/embedJS/u3/?request=video&ver=2&v={_id}'
-        response = requests.get(link, headers=HEADERS, timeout=10).json()
+        response = json.loads(urlopen(Request(link, headers=HEADERS)).read().decode('utf-8'))
         mp4 = response['ua']['mp4']
         mp4_sorted = dict(sorted(mp4.items(), key=lambda item: int(item[0]), reverse=True))
         first_item_url = next(iter(mp4_sorted.values()))['url']
