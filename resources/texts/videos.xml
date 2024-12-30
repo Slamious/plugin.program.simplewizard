@@ -1,0 +1,19 @@
+<videos>
+
+  <video>
+	<name>Rumble or Youtube Video 1</name>
+	<url>http://</url>
+	<icon>http://</icon>
+	<fanart>http://</fanart>
+	<description>Tutorials or other videos.</description>
+  </video>
+  
+  <video>
+	<name>Rumble or Youtube Video 2</name>
+	<url>http://</url>
+	<icon>http://</icon>
+	<fanart>http://</fanart>
+	<description>Tutorials or other videos.</description>
+  </video>
+  
+</videos>

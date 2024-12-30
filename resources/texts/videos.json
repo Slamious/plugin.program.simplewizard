@@ -1,0 +1,18 @@
+{
+	"videos": [
+		{
+			"name": "Rumble or Youtube Video 1",
+			"url": "http://",
+			"icon": "http://",
+			"fanart": "http://",
+			"description": "Tutorials or other videos."
+		},
+		{
+			"name": "Rumble or Youtube Video 2",
+			"url": "http://",
+			"icon": "http://",
+			"fanart": "http://",
+			"description": "Tutorials or other videos."
+		}
+	]
+}
