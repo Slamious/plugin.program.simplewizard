@@ -67,7 +67,7 @@ class Startup:
             
     def get_page(self, url):
            req = Request(self.file_check(url), headers = headers)
-           return urlopen(req).read()
+           return urlopen(req).read().decode('utf-8')
         
     def save_menu(self):
         choices = [
