@@ -1,12 +1,23 @@
 <builds>
 
   <build>
-	<name></name>
-	<version></version>
-	<url></url>
-	<icon></icon>
-	<fanart></fanart>
-	<description></description>
+	<name>Build 1</name>
+	<version>1.0</version>
+	<url>http://</url>
+	<icon>http://</icon>
+	<fanart>http://</fanart>
+	<description>Brief description of the build.</description>
+	<preview>http://</preview>
+  </build>
+  
+  <build>
+	<name>Build 2</name>
+	<version>1.0</version>
+	<url>http://</url>
+	<icon>http://</icon>
+	<fanart>http://</fanart>
+	<description>Brief description of the build.</description>
+	<preview>http://</preview>
   </build>
   
 </builds>
