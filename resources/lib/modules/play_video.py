@@ -1,6 +1,7 @@
 import sys
 import re
 import json
+from urllib.parse import urlparse, parse_qs
 from urllib.request import Request, urlopen
 import xbmc
 import xbmcgui
@@ -13,6 +14,8 @@ def play_video(name: str, url: str, icon:str, description:str):
     if 'rumble.com' in url:
         link = resolve_rumble(url)
     elif 'youtu.be' in url:
+        link = resolve_youtu_be(url)
+    elif '?v=' in url:
         link = resolve_youtube(url)
     elif any(url.lower().endswith(x.strip()) for x in SUPPORTED_IMAGES):
         xbmc.executebuiltin(f'ShowPicture({url})')
@@ -40,10 +43,16 @@ def resolve_rumble(url: str) -> str:
         first_item_url = next(iter(mp4_sorted.values()))['url']
         return first_item_url
 
-def resolve_youtube(url: str) -> str:
+def resolve_youtu_be(url: str) -> str:
     pattern = r'youtu\.be/([a-zA-Z0-9_-]+)'
     match = re.search(pattern, url)
     if match:
         video_id = match.group(1)
         return f'plugin://plugin.video.youtube/play/?video_id={video_id}'
 
+def resolve_youtube(url: str) -> str:
+    parsed_url = urlparse(url)
+    query_params = parse_qs(parsed_url.query)
+    video_id = query_params.get("v", [None])[0]
+    return f'plugin://plugin.video.youtube/play/?video_id={video_id}'
+    
