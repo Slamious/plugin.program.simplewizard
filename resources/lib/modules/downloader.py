@@ -6,28 +6,27 @@ import xbmcgui
 class Downloader:
     def __init__(self, url):
         self.url = url
-        self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36'
-        self.headers = {"User-Agent":self.user_agent, "Connection":'keep-alive', 'Accept':'audio/webm,audio/ogg,udio/wav,audio/*;q=0.9,application/ogg;q=0.7,video/*;q=0.6,*/*;q=0.5'}
+        self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        self.headers = {"User-Agent": self.user_agent}
         
     def get_urllib(self, decoding=True):
         req = Request(self.url, headers = self.headers)
-        if decoding:
-            return urlopen(req).read().decode('utf-8')
-        else:
-            return urlopen(req)
+        with urlopen(req) as response:
+            if decoding:
+                return response.decode('utf-8')
+            return response
     
     def get_session(self, decoding=True, stream=False):
         import requests
-        session = requests.Session()
+        session = requests.sessions.Session()
         if decoding:
             return session.get(self.url,headers=self.headers, stream=stream).content.decode('utf-8')
-        else:
-            return session.get(self.url,headers=self.headers, stream=stream)
+        return session.get(self.url,headers=self.headers, stream=stream)
     
     def get_requests(self, decoding=True, stream=False):
         import requests
         if decoding:
-            return requests.get(self.url, headers=self.headers, stream=stream).content.decode('utf-8')
+            return requests.get(self.url, headers=self.headers, stream=stream, timeout=10).content.decode('utf-8')
         else:
             if 'dropbox.com' in self.url:
                 return requests.get(self.url, stream=stream, timeout=10)
@@ -42,7 +41,7 @@ class Downloader:
         except KeyError:
             return None
     
-    def download_build(self, name,zippath,meth='session', stream=True):
+    def download_build(self, name, zippath,meth='session', stream=True):
         if meth in 'session':
             response = self.get_session(decoding=False, stream=stream)
         elif meth in 'requests':
@@ -114,4 +113,4 @@ class Downloader:
               for ch in r.iter_content(chunk_size = 2391975):
                   if ch:
                       f.write(ch)
-                  f.close()
+                      
