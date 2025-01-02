@@ -75,3 +75,33 @@ class XmlParser:
                 data[key] = match.group(1) if match else ''
             parsed_items.append(data)
         return parsed_items
+
+
+class TextParser:
+    def __init__(self, text_content):
+        self.text_content = text_content
+        self.plugin_pattern = r'id="(?P<id>.*?)"\nversion="(?P<version>.*?)"\nzip="(?P<zip>.*?)"'
+        self.build_pattern = (
+            r'name="(?P<name>.*?)"\n'
+            r'version="(?P<version>.*?)"\n'
+            r'url="(?P<url>.*?)"\n'
+            r'minor="(?P<minor>.*?)"\n'
+            r'gui="(?P<gui>.*?)"\n'
+            r'kodi="(?P<kodi>.*?)"\n'
+            r'theme="(?P<theme>.*?)"\n'
+            r'icon="(?P<icon>.*?)"\n'
+            r'fanart="(?P<fanart>.*?)"\n'
+            r'preview="(?P<preview>.*?)"\n'
+            r'adult="(?P<adult>.*?)"\n'
+            r'info="(?P<info>.*?)"\n'
+            r'description="(?P<description>.*?)"'
+        )
+    
+    def parse_builds(self):
+        build_matches = re.finditer(self.build_pattern, self.text_content)
+        return [match.groupdict() for match in build_matches]
+    
+    def parse_plugin(self):
+        plugin_match = re.search(self.plugin_pattern, self.text_content)
+        return plugin_match.groupdict() if plugin_match else {}
+        
