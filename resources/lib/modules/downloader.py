@@ -13,8 +13,8 @@ class Downloader:
         req = Request(self.url, headers = self.headers)
         with urlopen(req) as response:
             if decoding:
-                return response.decode('utf-8')
-            return response
+                return response.read().decode('utf-8')
+            return response.read()
     
     def get_session(self, decoding=True, stream=False):
         import requests
