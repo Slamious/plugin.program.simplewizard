@@ -1,3 +1,4 @@
+from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
 import json
 import re
@@ -82,18 +83,18 @@ class TextParser:
         self.text_content = text_content
         self.plugin_pattern = r'id="(?P<id>.*?)"\nversion="(?P<version>.*?)"\nzip="(?P<zip>.*?)"'
         self.build_pattern = (
-            r'name="(?P<name>.*?)"\n'
-            r'version="(?P<version>.*?)"\n'
-            r'url="(?P<url>.*?)"\n'
-            r'minor="(?P<minor>.*?)"\n'
-            r'gui="(?P<gui>.*?)"\n'
-            r'kodi="(?P<kodi>.*?)"\n'
-            r'theme="(?P<theme>.*?)"\n'
-            r'icon="(?P<icon>.*?)"\n'
-            r'fanart="(?P<fanart>.*?)"\n'
-            r'preview="(?P<preview>.*?)"\n'
-            r'adult="(?P<adult>.*?)"\n'
-            r'info="(?P<info>.*?)"\n'
+            r'name="(?P<name>.*?)".+?\n'
+            r'version="(?P<version>.*?)".+?\n'
+            r'url="(?P<url>.*?)".+?\n'
+            r'minor="(?P<minor>.*?)".+?\n'
+            r'gui="(?P<gui>.*?)".+?\n'
+            r'kodi="(?P<kodi>.*?)".+?\n'
+            r'theme="(?P<theme>.*?)".+?\n'
+            r'icon="(?P<icon>.*?)".+?\n'
+            r'fanart="(?P<fanart>.*?)".+?\n'
+            r'preview="(?P<preview>.*?)".+?\n'
+            r'adult="(?P<adult>.*?)".+?\n'
+            r'info="(?P<info>.*?)".+?\n'
             r'description="(?P<description>.*?)"'
         )
     
@@ -104,4 +105,13 @@ class TextParser:
     def parse_plugin(self):
         plugin_match = re.search(self.plugin_pattern, self.text_content)
         return plugin_match.groupdict() if plugin_match else {}
+
+
+def get_page(url):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    request = Request(url, headers=headers)
+    with urlopen(request) as response:
+        return response.read().decode('utf-8')
         
