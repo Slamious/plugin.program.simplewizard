@@ -1,11 +1,11 @@
 import json
 import base64
 from urllib.request import Request, urlopen
-import xml.etree.ElementTree as ET
 import xbmc
 import xbmcgui
 from uservar import buildfile, notify_url
 from .maintenance import clear_packages_startup
+from .parser import XmlParser, TextParser
 from .addonvar import setting, setting_set, addon_name, isBase64, headers, dialog, local_string, addon_id, gui_save_default
 from .build_install import restore_binary, binaries_path
 from .addons_enable import enable_addons
@@ -17,7 +17,6 @@ CURRENT_VERSION = setting('buildversion')
 
 
 class Startup:
-    
     def check_updates(self):
            if CURRENT_BUILD == 'No Build Installed':
                nobuild = dialog.yesnocustom(addon_name, 'There is currently no build installed.\nWould you like to install one now?', 'Remind Later')
@@ -32,18 +31,24 @@ class Startup:
            except:
                return
            version = ''
+           builds = []
+           
            if '"builds"' in response or "'builds'" in response:
                builds = json.loads(response)['builds']
-               for build in builds:
-                   if build.get('name') == CURRENT_BUILD:
-                       version = str(build.get('version'))
-                       break
+               
            elif '<version>' in response:
-               builds = ET.fromstring(response)
-               for tag in builds.findall('build'):
-                       if tag.find('name').text == CURRENT_BUILD:
-                           version = str(tag.find('version').text)
-                           break
+               xml = XmlParser(response)
+               builds = xml.parse_builds()
+               
+           elif 'name="' in response:
+               text = TextParser(response)
+               builds = text.parse_builds()
+           
+           for build in builds:
+               if build.get('name') == CURRENT_BUILD:
+                   version = str(build.get('version'))
+                   break
+                   
            if version > CURRENT_VERSION and setting('update_passed') != 'true':
                update_available = xbmcgui.Dialog().yesnocustom(
                    addon_name,
