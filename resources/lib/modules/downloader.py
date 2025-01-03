@@ -11,10 +11,9 @@ class Downloader:
         
     def get_urllib(self, decoding=True):
         req = Request(self.url, headers = self.headers)
-        with urlopen(req) as response:
-            if decoding:
-                return response.read().decode('utf-8')
-            return response.read()
+        if decoding:
+            return urlopen(req).read().decode('utf-8')
+        return urlopen(req)
     
     def get_session(self, decoding=True, stream=False):
         import requests
