@@ -4,7 +4,7 @@ import xbmc
 import xbmcplugin
 from .addonvar import addon_name
 from .utils import add_dir
-from .parser import Parser
+from .parser import Parser, XmlParser, TextParser, get_page
 from .dropbox import DownloadFile
 from uservar import buildfile
 from .addonvar import addon_icon, addon_fanart, local_string, build_file, authorize
@@ -32,6 +32,8 @@ def main_menu():
 def build_menu():
     xbmc.executebuiltin('Dialog.Close(busydialog)')
     xbmcplugin.setPluginCategory(HANDLE, local_string(30010))
+    
+    builds = []
     if buildfile.startswith('https://www.dropbox.com'):
         DownloadFile(buildfile, build_file)
         try:
@@ -39,13 +41,19 @@ def build_menu():
         except:
             xml = Parser(build_file)
             builds = json.loads(xml.get_list2())['builds']
-    elif not buildfile.endswith('.xml') and not buildfile.endswith('.json'):
-        add_dir(local_string(30017),'','',addon_icon,addon_fanart,local_string(30017),isFolder=False)  # Invalid Build URL
-        return
     else:
-        p = Parser(buildfile)
-        builds = json.loads(p.get_list())['builds']
-    
+        response = get_page(buildfile)
+        if '"builds"' in response or "'builds'" in response:
+            builds = json.loads(response)['builds']
+           
+        elif '<name>' in response:
+            xml = XmlParser(response)
+            builds = xml.parse_builds()
+        
+        elif 'name=' in response:
+            text = TextParser(response)
+            builds = text.parse_builds()
+            
     for build in builds:
         name = (build.get('name', local_string(30018)))  # Unknown Name
         version = (build.get('version', '0'))
