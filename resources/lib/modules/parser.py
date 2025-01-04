@@ -97,10 +97,22 @@ class TextParser:
             r'info="(?P<info>.*?)".+?\n'
             r'description="(?P<description>.*?)"'
         )
+        
+        self.video_pattern = (
+            r'name="(?P<name>.*?)".+?\n'
+            r'url="(?P<url>.*?)".+?\n'
+            r'icon="(?P<icon>.*?)".+?\n'
+            r'fanart="(?P<fanart>.*?)".+?\n'
+            r'description="(?P<description>.*?)"'
+        )
     
     def parse_builds(self):
         build_matches = re.finditer(self.build_pattern, self.text_content)
         return [match.groupdict() for match in build_matches]
+    
+    def parse_videos(self):
+        video_matches = re.finditer(self.build_pattern, self.text_content)
+        return [match.groupdict() for match in video_matches]
     
     def parse_plugin(self):
         plugin_match = re.search(self.plugin_pattern, self.text_content)
