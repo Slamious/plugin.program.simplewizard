@@ -127,6 +127,10 @@ def router(paramstring):
     elif mode == 29:
         advanced_settings(advancedsettings_folder_k21)
     
+    elif mode == 30:
+        from .play_video import video_menu
+        video_menu()
+    
     elif mode == 100:
         if notify_url in ('http://CHANGEME', 'http://slamiousproject.com/wzrd/notify19.txt', ''):
             xbmcgui.Dialog().ok(addon_name, 'No Notifications to Display')
