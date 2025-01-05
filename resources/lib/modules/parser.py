@@ -59,6 +59,7 @@ class XmlParser:
         video_pattern = re.compile(r"<video>(.*?)</video>", re.DOTALL)
         sub_element_patterns = {
             "name": re.compile(r"<name>(.*?)</name>"),
+            "section": re.compile(r"<section>(.*?)</section>"),
             "url": re.compile(r"<url>(.*?)</url>"),
             "icon": re.compile(r"<icon>(.*?)</icon>"),
             "fanart": re.compile(r"<fanart>(.*?)</fanart>"),
@@ -100,6 +101,7 @@ class TextParser:
         
         self.video_pattern = (
             r'name="(?P<name>.*?)".+?\n'
+            r'section="(?P<section>.*?)".+?\n'
             r'url="(?P<url>.*?)".+?\n'
             r'icon="(?P<icon>.*?)".+?\n'
             r'fanart="(?P<fanart>.*?)".+?\n'
