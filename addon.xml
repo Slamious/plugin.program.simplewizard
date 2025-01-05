@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.program.simplewizard" name="Simple Wizard" version="3.0.6" provider-name="Slam, Sarge, Funsterbe, BYB">
+<addon id="plugin.program.simplewizard" name="Simple Wizard" version="3.0.7" provider-name="Slam, Sarge, Funsterbe, BYB">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0"/>
 		<import addon="script.module.requests" optional="true" />
@@ -19,8 +19,7 @@
 		<website></website> 
 		<email></email>
 		<source></source>
-		<news>3.0.2 - Added speedtest. Bugfixes. 3.0.0 - Added backup/restore functionality for trakt/debrid accounts. Updated debrid/trakt authorization section. Restore of gui/skin settings has been added. Updated Advancedsettings configs. Updated wizard artwork. Added user edited color options for menus. Fixed wizard writing over itself during build installs. Edited fresh start to keep wizard/dependencies. Removed double ok dialog during build installs. Numerous other small fixes throughout.
-		</news>
+		<news></news>
 		<assets>
 				<icon>resources/icon.png</icon>
 				<fanart>resources/fanart.jpg</fanart>
