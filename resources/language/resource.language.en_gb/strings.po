@@ -132,7 +132,7 @@ msgid "Authorize Services"
 msgstr ""
 
 msgctxt "#30028"
-msgid "The wizard is ready to install your build."
+msgid "The wizard is ready to install your build.\nYour current setup will be erased!\nWould you like to proceed?"
 msgstr ""
 
 msgctxt "#30029"
