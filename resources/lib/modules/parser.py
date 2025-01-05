@@ -82,29 +82,34 @@ class XmlParser:
 class TextParser:
     def __init__(self, text_content):
         self.text_content = text_content
-        self.plugin_pattern = r'id="(?P<id>.*?)"\nversion="(?P<version>.*?)"\nzip="(?P<zip>.*?)"'
+        self.plugin_pattern = (
+            r'id="(?P<id>.*?)".*?\n'
+            r'version="(?P<version>.*?)".*?\n'
+            r'zip="(?P<zip>.*?)"'
+        )
+        
         self.build_pattern = (
-            r'name="(?P<name>.*?)".+?\n'
-            r'version="(?P<version>.*?)".+?\n'
-            r'url="(?P<url>.*?)".+?\n'
-            r'minor="(?P<minor>.*?)".+?\n'
-            r'gui="(?P<gui>.*?)".+?\n'
-            r'kodi="(?P<kodi>.*?)".+?\n'
-            r'theme="(?P<theme>.*?)".+?\n'
-            r'icon="(?P<icon>.*?)".+?\n'
-            r'fanart="(?P<fanart>.*?)".+?\n'
-            r'preview="(?P<preview>.*?)".+?\n'
-            r'adult="(?P<adult>.*?)".+?\n'
-            r'info="(?P<info>.*?)".+?\n'
+            r'name="(?P<name>.*?)".*?\n'
+            r'version="(?P<version>.*?)".*?\n'
+            r'url="(?P<url>.*?)".*?\n'
+            r'minor="(?P<minor>.*?)".*?\n'
+            r'gui="(?P<gui>.*?)".*?\n'
+            r'kodi="(?P<kodi>.*?)".*?\n'
+            r'theme="(?P<theme>.*?)".*?\n'
+            r'icon="(?P<icon>.*?)".*?\n'
+            r'fanart="(?P<fanart>.*?)".*?\n'
+            r'preview="(?P<preview>.*?)".*?\n'
+            r'adult="(?P<adult>.*?)".*?\n'
+            r'info="(?P<info>.*?)".*?\n'
             r'description="(?P<description>.*?)"'
         )
         
         self.video_pattern = (
-            r'name="(?P<name>.*?)".+?\n'
-            r'section="(?P<section>.*?)".+?\n'
-            r'url="(?P<url>.*?)".+?\n'
-            r'icon="(?P<icon>.*?)".+?\n'
-            r'fanart="(?P<fanart>.*?)".+?\n'
+            r'name="(?P<name>.*?)".*?\n'
+            r'section="(?P<section>.*?)".*?\n'
+            r'url="(?P<url>.*?)".*?\n'
+            r'icon="(?P<icon>.*?)".*?\n'
+            r'fanart="(?P<fanart>.*?)".*?\n'
             r'description="(?P<description>.*?)"'
         )
     
