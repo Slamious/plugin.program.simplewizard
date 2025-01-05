@@ -1,3 +1,5 @@
+3.0.7 - Updated parsers to include the option of using Open Wizard format build texts. Switched from Elementtree to regex parser for xml build files. Added rumble.com support for video previews.  Added optional "Videos" section for video tutorials and other useful videos. Supports Rumble, YouTube or directs. Videos section url needs to be added in uservar.py. Added support for more flexible build versions.  Build versions are now treated as strings so can now be 1.0.0 or 1.0.0a for example. Updated templates in the texts folder to reflect added compatibility. Code cleanup.
+
 3.0.6 - Added K21 advanced settings video cache configs. Added a new feature that will allow the user to backup/restore their GUI/Skin settings. Updated clear packages at startup to only run if there are packages to clear. 
 
 3.0.2 - Added speedtest, various bugfixes
