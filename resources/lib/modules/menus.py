@@ -6,7 +6,7 @@ from .addonvar import addon_name
 from .utils import add_dir
 from .parser import Parser, XmlParser, TextParser, get_page
 from .dropbox import DownloadFile
-from uservar import buildfile
+from uservar import buildfile, videos_url
 from .addonvar import addon_icon, addon_fanart, local_string, build_file, authorize
 from .colors import colors
 
@@ -26,6 +26,9 @@ def main_menu():
     add_dir(COLOR2(local_string(30026)),'',10,addon_icon,addon_fanart,COLOR2(local_string(30026)))  # Authorize Debrid Services
     
     add_dir(COLOR2(local_string(30013)), '', 100, addon_icon, addon_fanart, COLOR2(local_string(30014)), isFolder=False)  # Notification
+    
+    if videos_url not in ('', 'http://', 'http://changeme'):
+        add_dir(COLOR2('Videos'), videos_url, 30, addon_icon, addon_fanart, COLOR2('Videos'), isFolder=True)
     
     add_dir(COLOR2(local_string(30015)), '', 9, addon_icon, addon_fanart, COLOR2(local_string(30016)), isFolder=False)  # Settings
 
