@@ -113,7 +113,7 @@ class TextParser:
         return [match.groupdict() for match in build_matches]
     
     def parse_videos(self):
-        video_matches = re.finditer(self.build_pattern, self.text_content)
+        video_matches = re.finditer(self.video_pattern, self.text_content)
         return [match.groupdict() for match in video_matches]
     
     def parse_plugin(self):
