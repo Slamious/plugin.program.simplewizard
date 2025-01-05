@@ -69,7 +69,7 @@ def build_menu():
         if url.endswith('.xml') or url.endswith('.json'):
             add_dir(COLOR2(name),url,1,icon,fanart,COLOR2(description),name2=name,version=version,isFolder=True)
         add_dir(COLOR2(f'{name} {local_string(30020)} {version}'), url, 3, icon, fanart, description, name2=name, version=version, isFolder=False)  # Version
-        if preview is not None:
+        if preview not in (None, '', 'http://', 'https://'):
             add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False)  # Video Preview
 
 def submenu_maintenance():
