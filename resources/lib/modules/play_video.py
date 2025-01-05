@@ -5,10 +5,22 @@ from urllib.parse import urlparse, parse_qs
 from urllib.request import Request, urlopen
 import xbmc
 import xbmcgui
+import xbmcaddon
+from uservar import videos_url
+from .parser import get_page, TextParser, XmlParser
+from .utils import add_dir
+from .colors import colors
+
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0'
 HEADERS = {'User-Agent': USER_AGENT}
 SUPPORTED_IMAGES = xbmc.getSupportedMedia('picture').split('|')
+ADDON = xbmcaddon.Addon()
+ICON = ADDON.getAddonInfo('icon')
+FANART = ADDON.getAddonInfo('fanart')
+COLOR1 = colors.color_text1
+COLOR2 = colors.color_text2
+
 
 def play_video(name: str, url: str, icon:str, description:str):
     if 'rumble.com' in url:
@@ -55,4 +67,31 @@ def resolve_youtube(url: str) -> str:
     query_params = parse_qs(parsed_url.query)
     video_id = query_params.get("v", [None])[0]
     return f'plugin://plugin.video.youtube/play/?video_id={video_id}'
+
+def video_menu():
+    response = get_page(videos_url)
+    if '"name":' in response or "'name':" in response:
+        videos = json.loads(response)['videos']
+        
+    elif '<name>' in response:
+        xml = XmlParser(response)
+        videos = xml.parse_videos()
+        
+    elif 'name=' in response:
+        text = TextParser(response)
+        videos = text.parse_videos()
     
+    for video in videos:
+        name = video.get('name', '')
+        section = video.get('section', 'no')
+        url = video.get('url', '')
+        icon = video.get('icon', ICON)
+        fanart = video.get('fanart', FANART)
+        description = video.get('description', name)
+        
+        if section == 'yes':
+            add_dir(COLOR2(name), url, 30, icon, fanart, COLOR2(description), isFolder=True)
+        
+        else:
+            add_dir(COLOR2(name), url, 2, icon, fanart, COLOR2(description), isFolder=False)
+
