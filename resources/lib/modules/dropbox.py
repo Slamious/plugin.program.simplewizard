@@ -1,10 +1,10 @@
-import xbmc
 import os
 import shutil
 import urllib
+import xbmc
 from .utils import Log
 
-def DownloadFile(url,dst):
+def DownloadFile(url, dst):
     if not xbmc.getCondVisibility('System.HasAddon(script.module.requests)'):
         xbmc.executebuiltin('InstallAddon(script.module.requests)')
     if not xbmc.getCondVisibility('System.HasAddon(script.module.urllib3)'):
@@ -27,3 +27,4 @@ def DownloadFile(url,dst):
     else:
         Log('File {} not downloaded From {}'.format(dst,url))
         return False
+        
