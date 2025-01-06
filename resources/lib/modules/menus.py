@@ -39,23 +39,21 @@ def build_menu():
     builds = []
     if buildfile.startswith('https://www.dropbox.com'):
         DownloadFile(buildfile, build_file)
-        try:
-            builds = json.load(open(build_file,'r')).get('builds')
-        except:
-            xml = Parser(build_file)
-            builds = json.loads(xml.get_list2())['builds']
+        with open(build_file, 'r', encoding='utf-8', errors='ignore') as f:
+            response = f.read()
     else:
         response = get_page(buildfile)
-        if '"builds"' in response or "'builds'" in response:
-            builds = json.loads(response)['builds']
-           
-        elif '<name>' in response:
-            xml = XmlParser(response)
-            builds = xml.parse_builds()
         
-        elif 'name=' in response:
-            text = TextParser(response)
-            builds = text.parse_builds()
+    if '"name":' in response or "'name':" in response:
+        builds = json.loads(response)['builds']
+    
+    elif '<name>' in response:
+        xml = XmlParser(response)
+        builds = xml.parse_builds()
+    
+    elif 'name=' in response:
+        text = TextParser(response)
+        builds = text.parse_builds()
             
     for build in builds:
         name = (build.get('name', local_string(30018)))  # Unknown Name
