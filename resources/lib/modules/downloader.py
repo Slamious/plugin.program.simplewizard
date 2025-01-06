@@ -16,6 +16,8 @@ class Downloader:
         return urlopen(req)
     
     def get_session(self, decoding=True, stream=False):
+        if not xbmc.getCondVisibility('System.HasAddon(script.module.requests)'):
+            xbmc.executebuiltin('InstallAddon(script.module.requests)')
         import requests
         session = requests.sessions.Session()
         if decoding:
@@ -23,6 +25,9 @@ class Downloader:
         return session.get(self.url,headers=self.headers, stream=stream)
     
     def get_requests(self, decoding=True, stream=False):
+        if not xbmc.getCondVisibility('System.HasAddon(script.module.requests)'):
+            xbmc.executebuiltin('InstallAddon(script.module.requests)')
+        xbmc.executebuiltin('InstallAddon(script.module.requests)')
         import requests
         if decoding:
             return requests.get(self.url, headers=self.headers, stream=stream, timeout=10).content.decode('utf-8')
@@ -31,24 +36,15 @@ class Downloader:
                 return requests.get(self.url, stream=stream, timeout=10)
             return requests.get(self.url, headers=self.headers, stream=stream, timeout=10)
     
-    def get_length(self, response, meth = 'session'):
+    def get_length(self, response):
         try:
-            if meth in ['session', 'requests']:
-                return response.headers.get('content-length')
-            elif meth=='urllib':
-                return response.getheader('content-length')
+            return response.getheader('content-length')
         except KeyError:
             return None
     
-    def download_build(self, name, zippath,meth='session', stream=True):
-        if meth in 'session':
-            response = self.get_session(decoding=False, stream=stream)
-        elif meth in 'requests':
-            response = self.get_requests(decoding=False, stream=stream)
-        elif meth in 'urllib':
-            response = self.get_urllib(decoding=False)
-        
-        length = self.get_length(response,meth=meth)
+    def download_build(self, name, zippath):
+        response = self.get_urllib(decoding=False)
+        length = self.get_length(response)
         if length is not None:
             length2 = int(int(length)/1000000)
         else:
@@ -60,31 +56,19 @@ class Downloader:
         tempzip = open(zippath, 'wb')
         if length:
             size = 0
-            if meth in ['session', 'requests']:
-                for chunk in response.iter_content(chunk_size=1000000):
-                    size += len(chunk)
-                    size2 = int(size/1000000)
-                    tempzip.write(chunk)
-                    perc = int(int(size)/int(length)*100)
-                    dp.update(perc, 'Downloading your build...' + '\n' + str(size2) + '/' + str(length2) + 'MB')
-                    if dp.iscanceled():
-                        cancelled = True
-                        break
-            elif meth in 'urllib':
-                blocksize = 1000000
-                #blocksize = max(int(length)/512, 1000000)
-                while True:
-                    buf = response.read(blocksize)
-                    if not buf:
-                        break
-                    size += len(buf)
-                    size2 = int(size/1000000)
-                    perc = int(int(size)/int(length)*100)
-                    tempzip.write(buf)
-                    dp.update(perc, 'Downloading your build...' + '\n' + str(size2) + '/' + str(length2) + 'MB')
-                    if dp.iscanceled():
-                        cancelled = True
-                        break
+            blocksize = 1000000
+            while True:
+                buf = response.read(blocksize)
+                if not buf:
+                    break
+                size += len(buf)
+                size2 = int(size/1000000)
+                perc = int(int(size)/int(length)*100)
+                tempzip.write(buf)
+                dp.update(perc, 'Downloading your build...' + '\n' + str(size2) + '/' + str(length2) + 'MB')
+                if dp.iscanceled():
+                    cancelled = True
+                    break
                 
         else:
             dp.update(50, 'Downloading your build...')
