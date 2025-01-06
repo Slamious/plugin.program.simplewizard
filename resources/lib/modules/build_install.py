@@ -1,19 +1,19 @@
 import os
-import xbmc
-import xbmcvfs
-import xbmcaddon
-from .downloader import Downloader
 import json
 from datetime import datetime
 import time
 import sqlite3
 from zipfile import ZipFile
-from .save_data import save_backup_restore
-from .maintenance import fresh_start, clean_backups, truncate_tables
-from .addonvar import dp, dialog, zippath, addon_name, addon_id, home, setting_set, local_string, addons_db
 from xml.etree import ElementTree as ET
 from pathlib import Path
 import shutil
+import xbmc
+import xbmcvfs
+import xbmcaddon
+from .downloader import Downloader
+from .save_data import save_backup_restore
+from .maintenance import fresh_start, clean_backups, truncate_tables
+from .addonvar import dp, dialog, zippath, addon_name, addon_id, home, setting_set, local_string, addons_db
 from .colors import colors
 
 addons_path = Path(xbmcvfs.translatePath('special://home/addons'))
@@ -25,7 +25,12 @@ color2 = colors.color_text2
 
 def build_install(name, name2, version, url):
     # Ready to install, Cancel, Continue
-    if not dialog.yesno(color2(name), color2(local_string(30028)), nolabel=local_string(30029), yeslabel=local_string(30030)):
+    if not dialog.yesno(
+        color2(name),
+        color2(local_string(30028)),
+        nolabel=local_string(30029),
+        yeslabel=local_string(30030)
+    ):
         return
     
     download_build(name, url)
@@ -49,14 +54,7 @@ def download_build(name, url):
     if os.path.exists(zippath):
         os.unlink(zippath)
     d = Downloader(url)
-    if 'dropbox' in url:
-        if not xbmc.getCondVisibility('System.HasAddon(script.module.requests)'):
-            xbmc.executebuiltin('InstallAddon(script.module.requests)')
-            dialog.ok(color2(name), color2(local_string(30033)))  # Installing Requests
-            return
-        d.download_build(name, zippath, meth='requests')
-    else:
-        d.download_build(name, zippath, meth='urllib')
+    d.download_build(name, zippath)
 
 def extract_build():
     if os.path.exists(zippath):
