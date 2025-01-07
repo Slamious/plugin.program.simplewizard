@@ -6,11 +6,11 @@ import xbmcgui
 from uservar import buildfile, notify_url
 from .maintenance import clear_packages_startup
 from .parser import XmlParser, TextParser
-from .addonvar import setting, setting_set, addon_name, isBase64, headers, dialog, local_string, addon_id, gui_save_default
+from .addonvar import setting, setting_set, addon_name, isBase64, headers, dialog, local_string, addon_id, gui_save_default, build_file
 from .build_install import restore_binary, binaries_path
 from .addons_enable import enable_addons
 from .save_data import backup_gui_skin
-from ..GUIcontrol import notify
+from . import  notify
 
 CURRENT_BUILD = setting('buildname')
 CURRENT_VERSION = setting('buildversion')
@@ -19,13 +19,20 @@ CURRENT_VERSION = setting('buildversion')
 class Startup:
     def check_updates(self):
            if CURRENT_BUILD == 'No Build Installed':
-               nobuild = dialog.yesnocustom(addon_name, 'There is currently no build installed.\nWould you like to install one now?', 'Remind Later')
+               nobuild = dialog.yesnocustom(
+                   addon_name,
+                   'There is currently no build installed.\nWould you like to install one now?',
+                   'Remind Later'
+               )
                if nobuild == 1:
-                   xbmc.executebuiltin(f'ActivateWindow(10001, "plugin://{addon_id}/?mode=1",return)')
+                   xbmc.executebuiltin(
+                       f'ActivateWindow(10001, "plugin://{addon_id}/?mode=1",return)'
+                   )
                elif nobuild == 0:
                    setting_set('buildname', 'No Build')
-               else:
-                   return
+               return
+               
+           response = ''
            try:
                response = self.get_page(buildfile)
            except:
