@@ -2,7 +2,6 @@
 <addon id="plugin.program.simplewizard" name="Simple Wizard" version="3.0.7" provider-name="Slam, Sarge, Funsterbe, BYB">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0"/>
-		<import addon="script.module.requests" optional="true" />
 	</requires>
 	<extension point="xbmc.python.pluginsource" library="addon.py">
 		<provides>executable</provides>
