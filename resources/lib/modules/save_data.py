@@ -1,14 +1,13 @@
-import xbmc
-import xbmcgui
-import xbmcvfs	
-import xbmcaddon
 import os
 import shutil
 import json
-import xml.etree.ElementTree as ET 
-from .addonvar import user_path, data_path, setting, addon_id, packages, addon_name, dialog
+import xml.etree.ElementTree as ET
+import xbmc
+import xbmcvfs
+import xbmcaddon
+from .addonvar import user_path, data_path, setting, packages, addon_name, dialog
 
-user_path = xbmcvfs.translatePath('special://userdata/')	
+user_path = xbmcvfs.translatePath('special://userdata/')
 data_path = os.path.join(user_path, 'addon_data/')
 skin_path = xbmcvfs.translatePath('special://skin/')
 text_path = os.path.join(xbmcvfs.translatePath(xbmcaddon.Addon().getAddonInfo('path')), 'resources/', 'texts/')
