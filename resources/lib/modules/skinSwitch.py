@@ -17,11 +17,13 @@
 #  http://www.gnu.org/copyleft/gpl.html                                        #
 ################################################################################
 
-import os, xbmc, xbmcaddon
-try:
-    import json as simplejson 
-except:
-    import simplejson
+import os
+import json as simplejson
+import xbmc
+import xbmcvfs
+import xbmcaddon
+
+
 
 KODIV  = float(xbmc.getInfoLabel("System.BuildVersion")[:4])
 
@@ -50,7 +52,7 @@ def setNew(new, value):
 
 def swapSkins(skin):
     if skin == 'skin.confluence':
-        HOME     = xbmc.translatePath('special://home/')
+        HOME     = xbmcvfs.translatePath('special://home/')
         skinfold = os.path.join(HOME, 'userdata', 'addon_data', 'skin.confluence')
         settings = os.path.join(skinfold, 'settings.xml')
         if not os.path.exists(settings):
