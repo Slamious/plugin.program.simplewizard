@@ -1,10 +1,10 @@
+import os
+import base64
+from datetime import datetime
 import xbmc
 import xbmcvfs
 import xbmcaddon
 import xbmcgui
-import os
-import base64
-from datetime import datetime
 from .colors import colors
 
 
@@ -61,13 +61,9 @@ def isBase64(s):
             return False
     except:
         return False
-try:
-    if isBase64(buildfile):
-        buildfile = base64.b64decode(buildfile).decode('utf8')
-except:
-    pass
 
 def currSkin():
     return xbmc.getSkinDir()
+    
 def percentage(part, whole):
     return 100 * float(part)/float(whole)
