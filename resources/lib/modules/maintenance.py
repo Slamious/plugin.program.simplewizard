@@ -124,7 +124,7 @@ def fresh_start(standalone=False):
                     except:
                         xbmc.log('Unable to delete ' + name, xbmc.LOGINFO)
 
-    if not standalone:                
+    if not standalone:
         for root, dirs, files in os.walk(xbmcPath, topdown=True):
             dirs[:] = [d for d in dirs if d not in EXCLUDES_INSTALL]
             for name in files:
@@ -134,7 +134,7 @@ def fresh_start(standalone=False):
                     except:
                         xbmc.log('Unable to delete ' + name, xbmc.LOGINFO)
         dp.update(60, local_string(30043))
-        xbmc.sleep(100)    
+        xbmc.sleep(100)
         for root, dirs, files in os.walk(xbmcPath,topdown=True):
             dirs[:] = [d for d in dirs if d not in EXCLUDES_INSTALL]
             for name in dirs:
