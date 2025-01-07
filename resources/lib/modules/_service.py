@@ -126,7 +126,7 @@ class Startup:
         setting_set('firstrunSave', 'true')
 
     def notify_check(self):
-        if notify_url in ('http://CHANGEME', 'http://slamiousproject.com/wzrd/notify19.txt', ''):
+        if notify_url in ('http://CHANGEME', 'http://slamiousproject.com/wzrd/notify19.txt', '', 'http://'):
             return
         
         info = notify.get_notify()
