@@ -3,6 +3,7 @@ import os
 import xbmc
 import xbmcplugin
 import xbmcgui
+from uservar import notify_url
 from .params import Params
 from .play_video import play_video
 from .menus import main_menu, build_menu, submenu_maintenance, backup_restore, restore_gui_skin
@@ -11,7 +12,6 @@ from .build_install import build_install
 from .maintenance import fresh_start, clear_packages, clear_thumbnails, advanced_settings
 from .whitelist import get_whitelist
 from .addonvar import addon, addon_name, addon_icon, gui_save_default, gui_save_user, advancedsettings_folder_k20, advancedsettings_folder_k21
-from uservar import notify_url
 from .save_data import restore_gui, restore_skin, backup_gui_skin
 from .backup_restore import backup_build, restore_menu, restore_build, get_backup_folder, reset_backup_folder
 
