@@ -1,9 +1,9 @@
-import xbmc
-import xbmcgui
-import xbmcplugin
 import sys
 from inspect import getframeinfo, stack
 from urllib.parse import quote_plus, unquote_plus
+import xbmc
+import xbmcgui
+import xbmcplugin
 from .addonvar import addon_name, addon_version
 
 def add_dir(name,url,mode,icon,fanart,description, name2='', version='', addcontext=False,isFolder=True):
