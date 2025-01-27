@@ -13,21 +13,21 @@ import xbmcaddon
 from .downloader import Downloader
 from .save_data import save_backup_restore
 from .maintenance import fresh_start, clean_backups, truncate_tables
-from .addonvar import dp, dialog, zippath, addon_name, addon_id, home, setting_set, local_string, addons_db
+from .addonvar import dp, dialog, zippath, addon_name, addon_id, home, setting, setting_set, local_string, addons_db
 from .colors import colors
+
+COLOR1 = colors.color_text1
+COLOR2 = colors.color_text2
 
 addons_path = Path(xbmcvfs.translatePath('special://home/addons'))
 user_data = Path(xbmcvfs.translatePath('special://userdata'))
 binaries_path = Path(xbmcvfs.translatePath(xbmcaddon.Addon().getAddonInfo('profile'))) / 'binaries.json'
-color1 = colors.color_text1
-color2 = colors.color_text2
-    
 
 def build_install(name, name2, version, url):
     # Ready to install, Cancel, Continue
     if not dialog.yesno(
-        color2(name),
-        color2(local_string(30028)),
+        COLOR2(name),
+        COLOR2(local_string(30028)),
         nolabel=local_string(30029),
         yeslabel=local_string(30030)
     ):
@@ -37,7 +37,10 @@ def build_install(name, name2, version, url):
     save_backup_restore('backup')
     fresh_start()
     extract_build()
-    save_backup_restore('restore')
+    if name2 == setting('buildname'):
+        save_backup_restore('restore_gui')
+    else:
+        save_backup_restore('restore')
     clean_backups()
     setting_set('buildname', name2)
     setting_set('buildversion', version)
