@@ -81,6 +81,7 @@ def get_latest_db(db_type: str) -> str:
                     highest_file = file
             except ValueError:
                 pass
+    if highest_file is not None:
         return os.path.join(db_path, highest_file)
 
 textures_db = get_latest_db('Textures')
