@@ -107,6 +107,7 @@ def get_version():
        version = None
        url = None
     version = ''
+    url = ''
     builds = []
 
     if '"builds"' in response or "'builds'" in response:
