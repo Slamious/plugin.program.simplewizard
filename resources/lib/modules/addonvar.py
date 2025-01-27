@@ -30,7 +30,8 @@ addons_path = os.path.join(home, 'addons/')
 user_path = os.path.join(home, 'userdata/')
 data_path = os.path.join(user_path, 'addon_data/')
 db_path = translatePath('special://database')
-addons_db = os.path.join(db_path, 'Addons33.db')
+#addons_db = os.path.join(db_path,'Addons33.db')
+#textures_db = os.path.join(db_path,'Textures13.db')
 packages = os.path.join(addons_path, 'packages/')
 zippath = os.path.join(packages, 'tempzip.zip')
 resources = os.path.join(addon_path, 'resources/')
@@ -67,16 +68,20 @@ def currSkin():
 def percentage(part, whole):
     return 100 * float(part)/float(whole)
 
-def textures_db():
+
+def get_latest_db(db_type: str) -> str:
     highest_number = -1
     highest_file = None
     for file in os.listdir(db_path):
-        if file.startswith('textures') and file.endswith('db'):
+        if file.startswith(db_type) and file.endswith('.db'):
             try:
-                number = int(file[len('textures'):file.index('.db')])
+                number = int(file[len(db_type):file.index('.db')])
                 if number > highest_number:
                     highest_number = number
                     highest_file = file
             except ValueError:
                 pass
         return os.path.join(db_path, highest_file)
+
+textures_db = get_latest_db('Textures')
+addons_db = get_latest_db('Addons')
