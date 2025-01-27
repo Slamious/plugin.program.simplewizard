@@ -25,7 +25,7 @@ class Startup:
                elif nobuild == 0:
                    setting_set('buildname', 'No Build')
                return
-           if UPDATE_VERSION == None:
+           if UPDATE_VERSION is None:
                pass
            else:
                if UPDATE_VERSION > CURRENT_VERSION and setting('update_passed') != 'true':
