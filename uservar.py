@@ -4,11 +4,11 @@ buildfile = 'http://CHANGEME'
 '''#####-----Videos File-----#####'''
 videos_url = 'http://CHANGEME'
 
-'''#####-----Notifications File-----#####'''
+'''#####-----Notification File-----#####'''
 notify_url  = 'http://CHANGEME'
 
-'''#####-----Build Changelog File-----#####'''
-changelog_url  = 'http://CHANGEME'
+'''#####-----Changelog Directory-----#####'''
+changelog_dir  = 'http://CHANGEME/'
 
 '''#####-----Excludes-----#####'''
 excludes  = ['plugin.video.whatever']
