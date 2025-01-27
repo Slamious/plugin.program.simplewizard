@@ -25,40 +25,42 @@ class Startup:
                elif nobuild == 0:
                    setting_set('buildname', 'No Build')
                return
+           if UPDATE_VERSION == None:
+               pass
+           else:
+               if UPDATE_VERSION > CURRENT_VERSION and setting('update_passed') != 'true':
+                   update_available = xbmcgui.Dialog().yesnocustom(
+                       addon_name,
+                       f'{local_string(30047)} {CURRENT_BUILD} {local_string(30048)}\n{local_string(30049)} {CURRENT_VERSION}\n{local_string(30050)} {UPDATE_VERSION}\n{local_string(30051)}',
+                       yeslabel='Update Now', nolabel='Not Now', customlabel='View Changelog', defaultbutton=xbmcgui.DLG_YESNO_CUSTOM_BTN
+                   )
                    
-           if UPDATE_VERSION > CURRENT_VERSION and setting('update_passed') != 'true':
-               update_available = xbmcgui.Dialog().yesnocustom(
-                   addon_name,
-                   f'{local_string(30047)} {CURRENT_BUILD} {local_string(30048)}\n{local_string(30049)} {CURRENT_VERSION}\n{local_string(30050)} {UPDATE_VERSION}\n{local_string(30051)}',
-                   yeslabel='Update Now', nolabel='Not Now', customlabel='View Changelog', defaultbutton=xbmcgui.DLG_YESNO_CUSTOM_BTN
-               )
-               
-               if update_available == 1:
-                   name = CURRENT_BUILD
-                   name2 = name
-                   if BUILD_URL.startswith('https://www.dropbox.com'):
-                       url = BUILD_URL.replace('dl=0', 'dl=1')
-                   else:
-                       url = BUILD_URL
-                   build_install(name, name2, UPDATE_VERSION, url) 
-                   
-               elif update_available == 0:
-                   remind_later = xbmcgui.Dialog().yesno(addon_name, 'Would you like to be reminded later?', yeslabel='Remind Later', nolabel='Ignore', defaultbutton=xbmcgui.DLG_YESNO_YES_BTN)
-                   if remind_later:
-                       setting_set('update_passed', 'false')
-                   else:
-                       setting_set('update_passed', 'true')
-                   
-               elif update_available == 2:
-                   if changelog_dir == 'http://CHANGEME' or '':
-                       xbmcgui.Dialog().notification(addon_name, 'No Changelog to Display!!', addon_icon, 3000)
-                       Startup().check_updates()
-                   else:
-                       message = notify.get_changelog()
-                       notify.notification_clog(message)
-                   
-           elif UPDATE_VERSION == CURRENT_VERSION and setting('update_passed') == 'true':
-               setting_set('update_passed', 'false')
+                   if update_available == 1:
+                       name = CURRENT_BUILD
+                       name2 = name
+                       if BUILD_URL.startswith('https://www.dropbox.com'):
+                           url = BUILD_URL.replace('dl=0', 'dl=1')
+                       else:
+                           url = BUILD_URL
+                       build_install(name, name2, UPDATE_VERSION, url) 
+                       
+                   elif update_available == 0:
+                       remind_later = xbmcgui.Dialog().yesno(addon_name, 'Would you like to be reminded later?', yeslabel='Remind Later', nolabel='Ignore', defaultbutton=xbmcgui.DLG_YESNO_YES_BTN)
+                       if remind_later:
+                           setting_set('update_passed', 'false')
+                       else:
+                           setting_set('update_passed', 'true')
+                       
+                   elif update_available == 2:
+                       if changelog_dir == 'http://CHANGEME' or '':
+                           xbmcgui.Dialog().notification(addon_name, 'No Changelog to Display!!', addon_icon, 3000)
+                           Startup().check_updates()
+                       else:
+                           message = notify.get_changelog()
+                           notify.notification_clog(message)
+                       
+               elif UPDATE_VERSION == CURRENT_VERSION and setting('update_passed') == 'true':
+                   setting_set('update_passed', 'false')
                    
     def save_menu(self):
         choices = []

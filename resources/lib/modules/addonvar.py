@@ -104,7 +104,8 @@ def get_version():
     try:
        response = get_page(buildfile)
     except:
-       return
+       version = None
+       url = None
     version = ''
     builds = []
 
@@ -125,5 +126,4 @@ def get_version():
            url = (build.get('url', ''))
            break
     return version, url
-
 UPDATE_VERSION, BUILD_URL = get_version()
