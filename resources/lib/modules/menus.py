@@ -1,6 +1,7 @@
 import sys
 import json
 import xbmc
+import xbmcgui
 import xbmcplugin
 from .utils import add_dir
 from uservar import buildfile, videos_url
@@ -47,7 +48,11 @@ def build_menu():
     xbmcplugin.setPluginCategory(HANDLE, local_string(30010))
     
     builds = []
-    response = get_page(buildfile)
+    try:
+       response = get_page(buildfile)
+    except:
+       xbmcgui.Dialog().notification(addon_name, 'No Build File Present!!', addon_icon, 3000)
+       quit()
         
     if '"name":' in response or "'name':" in response:
         builds = json.loads(response)['builds']
