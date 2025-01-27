@@ -51,22 +51,22 @@ def restore(path, file):
         try:
             if os.path.isfile(os.path.join(packages, file)):
                 if os.path.exists(os.path.join(user_path, file)):
-                    os.unlink(os.path.join(path, file))   #Remove Kodi specifics (advancedsettings, favs etc...) included with new install
-                shutil.move(os.path.join(packages, file), os.path.join(path, file))   #Restore your backed up Kodi specifics (advancedsettings, favs etc...)
+                    os.unlink(os.path.join(path, file))   #Remove Kodi specifics included with new install
+                shutil.move(os.path.join(packages, file), os.path.join(path, file))   #Restore your backed up Kodi specifics
             elif os.path.isdir(os.path.join(packages, file)):
                 shutil.copytree(os.path.join(packages, file), os.path.join(path, file), dirs_exist_ok=True)   #Restore your backed up Trakt & Debrid data
         except Exception as e:
             xbmc.log('Failed to restore %s. Reason: %s' % (os.path.join(path, file), e), xbmc.LOGINFO)
-
+            
 def restore_gui(gui_save):
     if os.path.exists(os.path.join(gui_save, gui_file)):
         try:
-            xbmcvfs.copy(os.path.join(gui_save, gui_file), os.path.join(user_path, gui_file))   #Restore you backed up gui settings
+            xbmcvfs.copy(os.path.join(gui_save, gui_file), os.path.join(user_path, gui_file))   #Restore your backed up gui settings
         except Exception as e:
             xbmc.log('Failed to restore %s. Reason: %s' % (os.path.join(user_path, gui_file), e), xbmc.LOGINFO)
     dialog.ok(addon_name, 'To save changes you now need to force close Kodi, Press OK to force close Kodi')
     os._exit(1)
-    
+            
 def restore_skin(gui_save):
     if os.path.exists(os.path.join(data_path, skin_id)):
         try:
@@ -87,9 +87,9 @@ def save_backup_restore(_type: str) -> None:
         for item in item_list.keys():
             setting_id = item_list[item]['setting']
             path = item_list[item]['path']
-            data = item + '/settings.xml'             #Addon settings
-            realizer = item + '/rdauth.json'          #Realizer debrid data
-            youtube = item + '/api_keys.json'         #Youtube API Keys
+            data = item + '/settings.xml'               #Addon settings
+            realizer = item + '/rdauth.json'            #Realizer debrid data
+            youtube = item + '/api_keys.json'           #Youtube API Keys
             if path == 'user_path':
                 path = user_path
             elif path == 'data_path':
@@ -97,12 +97,17 @@ def save_backup_restore(_type: str) -> None:
             try:
                 if setting(setting_id)=='true':
                     if _type == 'backup':
-                        backup(path, data)            #Backup all addon data
-                        backup(user_path, item)       #Backup Kodi specifics
-                        backup(path, realizer)        #Backup Realizer data
-                        backup(path, youtube)         #Backup Youtube data
+                        backup(path, data)              #Backup all addon data
+                        backup(user_path, item)         #Backup Kodi specifics
+                        backup(path, realizer)          #Backup Realizer data
+                        backup(path, youtube)           #Backup Youtube data
                     elif _type == 'restore':
-                        restore(path, item)           #Restore all addon data and Kodi specifics
+                        if item == 'guisettings.xml':
+                            pass
+                        else:
+                            restore(path, item)         #Restore all addon data and the following Kodi specifics (advancedsettings, sources and favourites)
+                    elif _type == 'restore_gui':
+                            restore(path, item)         #Restore all addon data and the following Kodi specifics (guisettings, advancedsettings, sources and favourites)
             except Exception as e:
                 xbmc.log(f'Error= {e}', xbmc.LOGINFO)
                 continue
