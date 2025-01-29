@@ -89,16 +89,23 @@ def build_menu():
             
         elif '20' in kodi_ver and kodiversion == 'K20':
             add_dir(COLOR2(f'{name}  (v{version})'), url, 3, icon, fanart, description, name2=name, version=version, kodi=kodiversion, isFolder=False) # K20 Build Menu
+            if preview not in (None, '', 'http://', 'https://'):
+                add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False)  # Video Previews
+                
         elif '21' in kodi_ver and kodiversion == 'K21':
             add_dir(COLOR2(f'{name}  (v{version})'), url, 3, icon, fanart, description, name2=name, version=version, kodi=kodiversion, isFolder=False) # K21 Build Menu
+            if preview not in (None, '', 'http://', 'https://'):
+                add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False)  # Video Previews
+                
         elif '22' in kodi_ver and kodiversion == 'K22':
             add_dir(COLOR2(f'{name}  (v{version})'), url, 3, icon, fanart, description, name2=name, version=version, kodi=kodiversion, isFolder=False) # K22 Build Menu
+            if preview not in (None, '', 'http://', 'https://'):
+                add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False)  # Video Previews
 
         elif not any(x in kodiversion for x in kodi_versions):
             add_dir(COLOR2(f'{name} (v{version})'), url, 3, icon, fanart, description, name2=name, version=version, isFolder=False)  # Standard Build Menu
-            
-        if preview not in (None, '', 'http://', 'https://'):
-            add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False)  # Video Previews
+            if preview not in (None, '', 'http://', 'https://'):
+                add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False) 
 
 def submenu_maintenance():
     kodi_ver = str(xbmc.getInfoLabel("System.BuildVersion")[:4])
