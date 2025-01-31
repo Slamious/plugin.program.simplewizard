@@ -108,7 +108,6 @@ def build_menu():
                 add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False) 
 
 def submenu_maintenance():
-    kodi_ver = str(xbmc.getInfoLabel("System.BuildVersion")[:4])
     xbmcplugin.setPluginCategory(HANDLE, COLOR1(local_string(30022)))  # Maintenance
     add_dir(COLOR1('<><> [B]Maintenance[/B] <><>'),'','',addon_icon,addon_fanart, COLOR1('***Maintenance***'),isFolder=False)
     add_dir(COLOR2(local_string(30023)),'',6,addon_icon,addon_fanart,COLOR2(local_string(30005)),isFolder=False)  # Clear Packages
@@ -118,6 +117,8 @@ def submenu_maintenance():
         add_dir(COLOR2(local_string(30025)),'',8,addon_icon,addon_fanart,COLOR2(local_string(30009)),isFolder=False)  # Advanced Settings K20
     if '21' in kodi_ver:
         add_dir(COLOR2(local_string(30106)),'',29,addon_icon,addon_fanart,COLOR2(local_string(30009)),isFolder=False)  # Advanced Settings K21
+    if '22' in kodi_ver:
+        add_dir(COLOR2(local_string(30112)),'',31,addon_icon,addon_fanart,COLOR2(local_string(30009)),isFolder=False)  # Advanced Settings K22
     add_dir(COLOR2(local_string(30064)),'',11,addon_icon,addon_fanart,COLOR2(local_string(30064)), isFolder=False)  # Edit Whitelist
     add_dir(COLOR2('Backup/Restore Build'),'',12,addon_icon,addon_fanart, COLOR2('Backup and Restore Build'))  # Backup Build
     add_dir(COLOR2('Backup/Restore GUI & Skin Settings'),'',19,addon_icon,addon_fanart,COLOR2('Backup/Restore GUI & Skin Settings'))
