@@ -10,12 +10,6 @@ from uservar import buildfile
 from urllib.request import Request, urlopen
 from .parser import XmlParser, TextParser
 
-#Advanced Settings Paths
-advancedsettings_xml =  os.path.join(user_path, 'advancedsettings.xml')
-advancedsettings_k20 = os.path.join(resources, 'advancedsettings/nexus/')
-advancedsettings_k21 = os.path.join(resources, 'advancedsettings/omega')
-advancedsettings_k22 = os.path.join(resources, 'advancedsettings/piers')
-
 addon_id = xbmcaddon.Addon().getAddonInfo('id')
 addon           = xbmcaddon.Addon(addon_id)
 addon_info      = addon.getAddonInfo
@@ -59,6 +53,12 @@ notify_file = os.path.join(addon_profile,'notify.txt')
 texts_path = os.path.join(resources, 'texts/')
 authorize = texts_path + 'authorize.json'
 installed_date = str(datetime.now())[:-7]
+
+#Advanced Settings Paths
+advancedsettings_xml =  os.path.join(user_path, 'advancedsettings.xml')
+advancedsettings_k20 = os.path.join(resources, 'advancedsettings/nexus/')
+advancedsettings_k21 = os.path.join(resources, 'advancedsettings/omega')
+advancedsettings_k22 = os.path.join(resources, 'advancedsettings/piers')
 
 def isBase64(s):
     try:
