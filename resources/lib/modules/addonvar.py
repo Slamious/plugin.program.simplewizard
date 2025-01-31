@@ -10,6 +10,12 @@ from uservar import buildfile
 from urllib.request import Request, urlopen
 from .parser import XmlParser, TextParser
 
+#Advanced Settings Paths
+advancedsettings_xml =  os.path.join(user_path, 'advancedsettings.xml')
+advancedsettings_k20 = os.path.join(resources, 'advancedsettings/nexus/')
+advancedsettings_k21 = os.path.join(resources, 'advancedsettings/omega')
+advancedsettings_k22 = os.path.join(resources, 'advancedsettings/piers')
+
 addon_id = xbmcaddon.Addon().getAddonInfo('id')
 addon           = xbmcaddon.Addon(addon_id)
 addon_info      = addon.getAddonInfo
@@ -40,9 +46,6 @@ db_path = translatePath('special://database/')
 packages = os.path.join(addons_path, 'packages/')
 zippath = os.path.join(packages, 'tempzip.zip')
 resources = os.path.join(addon_path, 'resources/')
-advancedsettings_xml =  os.path.join(user_path, 'advancedsettings.xml')
-advancedsettings_k20 = os.path.join(resources, 'advancedsettings/nexus/')
-advancedsettings_k21 = os.path.join(resources, 'advancedsettings/omega')
 gui_save_default = os.path.join(user_path, 'gui_settings/')
 gui_save_user = os.path.join(user_path, 'gui_settings_user/')
 user_agent = 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36'
