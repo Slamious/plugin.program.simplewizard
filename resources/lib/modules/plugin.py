@@ -11,7 +11,7 @@ from .authorize import authorize_menu, authorize_submenu
 from .build_install import build_install
 from .maintenance import fresh_start, clear_packages, clear_thumbnails, advanced_settings
 from .whitelist import get_whitelist
-from .addonvar import addon, addon_name, addon_icon, gui_save_default, gui_save_user, advancedsettings_k20, advancedsettings_k21, UPDATE_VERSION, CURRENT_BUILD, BUILD_URL
+from .addonvar import addon, addon_name, addon_icon, gui_save_default, gui_save_user, advancedsettings_k20, advancedsettings_k21, advancedsettings_k22, UPDATE_VERSION, CURRENT_BUILD, BUILD_URL
 from .save_data import restore_gui, restore_skin, backup_gui_skin
 from .backup_restore import backup_build, restore_menu, restore_build, get_backup_folder, reset_backup_folder
 
@@ -131,6 +131,9 @@ def router(paramstring):
         from .play_video import video_menu
         video_menu()
 
+    elif mode == 31:
+        advanced_settings(advancedsettings_k22)
+        
     elif mode == 31:
         name = CURRENT_BUILD
         name2 = name
