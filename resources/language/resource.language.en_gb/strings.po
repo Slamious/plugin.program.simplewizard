@@ -424,3 +424,7 @@ msgstr ""
 msgctxt "#30111"
 msgid "Your currently installed build"
 msgstr ""
+
+msgctxt "#30112"
+msgid "Advanced Settings K22"
+msgstr ""
