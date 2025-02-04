@@ -102,7 +102,7 @@ def build_menu():
             if preview not in (None, '', 'http://', 'https://'):
                 add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False)  # Video Previews
 
-        elif not any(x in kodiversion for x in kodi_versions):
+        elif kodiversion == None not any(x in kodiversion for x in kodi_versions):
             add_dir(COLOR2(f'{name} (v{version})'), url, 3, icon, fanart, description, name2=name, version=version, isFolder=False)  # Standard Build Menu
             if preview not in (None, '', 'http://', 'https://'):
                 add_dir(COLOR1(local_string(30021) + ' ' + name + ' ' + local_string(30020) + ' ' + version), preview, 2, icon, fanart, COLOR2(description), name2=name, version=version, isFolder=False) 
