@@ -4,7 +4,7 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 from .utils import add_dir
-from uservar import buildfile, videos_url
+from uservar import buildfile, videos_url, changelog_dir
 from .parser import XmlParser, TextParser, get_page
 from .addonvar import addon_name, setting, addon_icon, addon_fanart, local_string, authorize, kodi_ver, kodi_versions, UPDATE_VERSION, CURRENT_BUILD, BUILD_VERSION
 from .colors import colors
@@ -33,7 +33,7 @@ def main_menu():
     
     add_dir(COLOR2(local_string(30026)),'',10,addon_icon,addon_fanart,COLOR2(local_string(30026)))  # Authorize Debrid Services
 
-    if CURRENT_BUILD not in ['No Build Installed', 'No Build']:
+    if changelog_dir not in ['', 'http://', 'http://CHANGEME/'] and CURRENT_BUILD not in ['No Build Installed', 'No Build']:
         add_dir(COLOR2(f'View Build Changelog'), '', 101, addon_icon, addon_fanart, COLOR2(local_string(30109)), isFolder=False)  # View Build Changelog
     
     add_dir(COLOR2(local_string(30013)), '', 100, addon_icon, addon_fanart, COLOR2(local_string(30014)), isFolder=False)  # View Notification
