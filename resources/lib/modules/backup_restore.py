@@ -21,7 +21,7 @@ compression = zipfile.ZIP_DEFLATED
 def log(_text, _var):
     xbmc.log(f'{_text} = {str(_var)}', xbmc.LOGINFO)
 
-excludes = [p / 'addons/packages', p / 'addons/temp', p / 'userdata/Thumbnails', p / 'userdata/Database/Textures13.db', p / wizard_path]
+excludes = [p / 'addons/packages', p / 'addons/temp', p / 'userdata/Thumbnails', p / 'userdata/Database/Textures13.db', p / 'userdata/Database/Textures14.db', p / wizard_path]
 
 def from_keyboard():
     kb = xbmc.Keyboard('', 'Enter Backup Name', False)

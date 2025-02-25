@@ -14,6 +14,11 @@
         "setting": "savesources",
         "path": "user_path"
     },
+    "guisettings.xml": {
+        "name": "Gui Settings",
+        "setting": "savegui",
+        "path": "user_path"
+    },
     "plugin.video.seren": {
         "name": "Seren",
         "setting": "savedata",

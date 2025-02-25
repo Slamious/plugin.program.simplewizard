@@ -11,6 +11,7 @@ class XmlParser:
         sub_element_patterns = {
             "name": re.compile(r"<name>(.*?)</name>"),
             "version": re.compile(r"<version>(.*?)</version>"),
+            "kodi": re.compile(r"<kodi>(.*?)</kodi>"),
             "url": re.compile(r"<url>(.*?)</url>"),
             "icon": re.compile(r"<icon>(.*?)</icon>"),
             "fanart": re.compile(r"<fanart>(.*?)</fanart>"),
@@ -99,4 +100,3 @@ def get_page(url):
     request = Request(url, headers=headers)
     with urlopen(request) as response:
         return response.read().decode('utf-8')
-        
