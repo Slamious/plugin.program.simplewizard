@@ -22,7 +22,7 @@ def main_menu():
     add_dir(COLOR1(f'<><> [B]Welcome to {addon_name}[/B] <><>'), '', '', addon_icon, addon_fanart, COLOR1(f'Welcome to {addon_name}'), isFolder=False)
 
     if UPDATE_VERSION > BUILD_VERSION:
-        add_dir(COLOR3(f'[B]Build Update Available!!![/B]   [{CURRENT_BUILD} v{UPDATE_VERSION}]'), '', 31, addon_icon, addon_fanart, COLOR2(local_string(30110)), isFolder=False)  # Build Update Available
+        add_dir(COLOR3(f'[B]Build Update Available!!![/B]   [{CURRENT_BUILD} v{UPDATE_VERSION}]'), '', 32, addon_icon, addon_fanart, COLOR2(local_string(30110)), isFolder=False)  # Build Update Available
         
     elif CURRENT_BUILD not in ['No Build Installed', 'No Build']:
         add_dir(COLOR4(f'Installed Build:   {CURRENT_BUILD} v{BUILD_VERSION}'), '', '', addon_icon, addon_fanart, COLOR2(local_string(30111)), isFolder=False)  # Installed Build
