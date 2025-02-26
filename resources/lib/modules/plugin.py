@@ -134,7 +134,7 @@ def router(paramstring):
     elif mode == 31:
         advanced_settings(advancedsettings_k22)
         
-    elif mode == 31:
+    elif mode == 32:
         name = CURRENT_BUILD
         name2 = name
         if BUILD_URL.startswith('https://www.dropbox.com'):
