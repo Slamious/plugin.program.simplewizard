@@ -88,6 +88,7 @@ def save_backup_restore(_type: str) -> None:
             setting_id = item_list[item]['setting']
             path = item_list[item]['path']
             data = item + '/settings.xml'               #Addon settings
+            fenlight = item + '/databases/settings.db'  #Fen Light settings
             realizer = item + '/rdauth.json'            #Realizer debrid data
             youtube = item + '/api_keys.json'           #Youtube API Keys
             if path == 'user_path':
@@ -97,10 +98,15 @@ def save_backup_restore(_type: str) -> None:
             try:
                 if setting(setting_id)=='true':
                     if _type == 'backup':
-                        backup(path, data)              #Backup all addon data
-                        backup(user_path, item)         #Backup Kodi specifics
-                        backup(path, realizer)          #Backup Realizer data
-                        backup(path, youtube)           #Backup Youtube data
+                        tasks = [
+                            (path, data),               #Backup all addon data
+                            (user_path, item),          #Backup Kodi specifics
+                            (path, fenlight),           #Backup Fen Light
+                            (path, realizer),           #Backup Realizer data
+                            (path, youtube),            #Backup Youtube data
+                        ]
+                        for p, val in tasks:
+                            backup(p, val)         
                     elif _type == 'restore':
                         if item == 'guisettings.xml':
                             pass
