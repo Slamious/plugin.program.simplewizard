@@ -6,7 +6,9 @@ import xbmcplugin
 from .utils import add_dir
 from uservar import buildfile, videos_url, changelog_dir
 from .parser import XmlParser, TextParser, get_page
-from .addonvar import addon_name, setting, addon_icon, addon_fanart, local_string, authorize, kodi_ver, kodi_versions, UPDATE_VERSION, CURRENT_BUILD, BUILD_VERSION
+from .addonvar import (addon_name, setting, addon_icon, addon_fanart, local_string, authorize, kodi_ver,
+                       build_ver, build_date, kodi_versions, sys_arch, os_name, code_name, UPDATE_VERSION,
+                       CURRENT_BUILD, BUILD_VERSION, NUM_BUILDS)
 from .colors import colors
 
 HANDLE = int(sys.argv[1])
@@ -22,12 +24,17 @@ def main_menu():
     add_dir(COLOR1(f'<><> [B]Welcome to {addon_name}[/B] <><>'), '', '', addon_icon, addon_fanart, COLOR1(f'Welcome to {addon_name}'), isFolder=False)
 
     if UPDATE_VERSION > BUILD_VERSION:
-        add_dir(COLOR3(f'[B]Build Update Available!!![/B]   [{CURRENT_BUILD} v{UPDATE_VERSION}]'), '', 32, addon_icon, addon_fanart, COLOR2(local_string(30110)), isFolder=False)  # Build Update Available
+        add_dir(COLOR3(f'[B]Update Available!!![/B]   [{CURRENT_BUILD} v{UPDATE_VERSION}]'), '', 32, addon_icon, addon_fanart, COLOR2(local_string(30110)), isFolder=False)  # Build Update Available
         
     elif CURRENT_BUILD not in ['No Build Installed', 'No Build']:
-        add_dir(COLOR4(f'Installed Build:   {CURRENT_BUILD} v{BUILD_VERSION}'), '', '', addon_icon, addon_fanart, COLOR2(local_string(30111)), isFolder=False)  # Installed Build
-    
-    add_dir(COLOR2(local_string(30010)), '', 1, addon_icon, addon_fanart, COLOR2(local_string(30001)), isFolder=True)  # Build Menu
+        add_dir(COLOR4(f'Installed Build: {CURRENT_BUILD} v{BUILD_VERSION}'), '', '', addon_icon, addon_fanart, COLOR2(local_string(30111)), isFolder=False)  # Installed Build
+
+    add_dir(COLOR4(f'Kodi {code_name} v{kodi_ver}'), '', '', addon_icon, addon_fanart, COLOR2(f'Release Date: {build_date}\n\nFull Version:\n{build_ver}'), isFolder=False) # Kodi Version
+
+    add_dir(COLOR4(f'{os_name} OS {sys_arch}'), '', '', addon_icon, addon_fanart, COLOR2(f'Current Operating System'), isFolder=False) # Operating System
+
+    build_menu_label = 'Build Menu' if NUM_BUILDS == 0 or buildfile in ('', 'http://CHANGEME') else f'Build Menu ({NUM_BUILDS} Builds)'
+    add_dir(COLOR2(build_menu_label), '', 1, addon_icon, addon_fanart, COLOR2(local_string(30001)), isFolder=True)  # Build Menu
     
     add_dir(COLOR2(local_string(30011)), '', 5, addon_icon, addon_fanart, COLOR2(local_string(30002)), isFolder=True)  # Maintenance Menu
     
