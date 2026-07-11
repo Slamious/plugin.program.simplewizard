@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
+	<category label="General">
+		<setting id="showinstalledbuild" type="bool" label="Show installed build information" default="true" />
+		<setting id="showkodistats" type="bool" label="Show Kodi system information" default="true" />
+	</category>
 	<category label="30053">
 		<setting type="lsep" label="30054"/>
 		<setting id="buildname" type="text" label="30055" enable="false" default="No Build Installed"/>
