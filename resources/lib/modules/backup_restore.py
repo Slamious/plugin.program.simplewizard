@@ -5,7 +5,9 @@ from zipfile import ZipFile
 from pathlib import Path
 import xbmc
 import xbmcgui
-from .addonvar import home, addon_profile, addon_path, setting, setting_set, translatePath, xbmcPath, addon_id, dp, local_string, addon_name, addon_icon, addon_fanart
+from .addonvar import (home, addon_profile, addon_path, setting,
+                       setting_set, translatePath, xbmcPath, addon_id,
+                       dp, local_string, addon_name, addon_icon, addon_fanart)
 from .utils import add_dir
 
 p = Path(home)
