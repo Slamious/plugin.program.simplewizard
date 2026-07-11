@@ -902,13 +902,13 @@ class AddonFullWindow(AddonWindow, FullWindowMixin):
 
     def setBackground(self, image=''):
         """
-        Set the main bacground to an image file.
+        Set the main background to an image file.
 
         :param image: path to an image file as str.
 
         Example::
 
-            self.setBackground('/images/bacground.png')
+            self.setBackground('/images/background.png')
         """
         self.main_bg.setImage(image)
 
