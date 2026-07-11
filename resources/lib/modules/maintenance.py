@@ -5,7 +5,9 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 from .skinSwitch import swapSkins
-from .addonvar import currSkin, user_path, db_path, addon_name, textures_db, advancedsettings_xml, dialog, dp, xbmcPath, packages, setting_set, addon_icon, local_string, addons_db
+from .addonvar import (currSkin, user_path, db_path, addon_name, addon_icon,
+                       addons_db, textures_db, advancedsettings_xml, dialog,
+                       dp, xbmcPath, packages, setting_set, local_string)
 from .whitelist import EXCLUDES_INSTALL, EXCLUDES_FRESH
 
 def purge_db(db):
@@ -88,22 +90,25 @@ def fresh_start(standalone=False):
         x = 0
         xbmc.sleep(100)
         while not xbmc.getCondVisibility("Window.isVisible(yesnodialog)") and x < 150:
-            x += 1
-            xbmc.sleep(100)
-            xbmc.executebuiltin('SendAction(Select)')
+                x += 1
+                xbmc.sleep(100)
+                xbmc.executebuiltin('SendAction(Select)')
         if xbmc.getCondVisibility("Window.isVisible(yesnodialog)"):
-            xbmc.executebuiltin('SendClick(11)')
-        else: 
-            xbmc.log('Fresh Install: Skin Swap Timed Out!', xbmc.LOGINFO)
-            return False
+                xbmc.executebuiltin('SendClick(11)')
+        else:
+                xbmc.log('Fresh Install: Skin Swap Timed Out!', xbmc.LOGINFO)
+                return False
         xbmc.sleep(100)
-    if not currSkin() in ['skin.estuary']:
+
+    if not currSkin() in ['skin.estuary']: # Abort if skin swap fails
         xbmc.log('Fresh Install: Skin Swap failed.', xbmc.LOGINFO)
-        return
+        return False
     dp.create(addon_name, local_string(30043))  # Deleting files and folders...
     xbmc.sleep(100)
     dp.update(30, local_string(30043))
-    xbmc.sleep(100)
+    xbmc.sleep(1000)
+    dp.close()
+    xbmc.sleep(500)
     if standalone:
         for root, dirs, files in os.walk(xbmcPath, topdown=True):
             dirs[:] = [d for d in dirs if d not in EXCLUDES_FRESH]
@@ -153,8 +158,11 @@ def fresh_start(standalone=False):
         setting_set('firstrun', 'true')
         setting_set('buildname', 'No Build Installed')
         setting_set('buildversion', '0')
-        truncate_tables()
-        dialog.ok(addon_name, local_string(30045))  # Fresh Start Complete
+        truncate_tables(Fresh=True)
+        xbmcgui.Dialog().notification(addon_name, 'Fresh Start Complete!', addon_icon, 3000) # Fresh Start Complete
+        xbmc.sleep(4000)
+        xbmcgui.Dialog().notification(addon_name, 'Force Closing Kodi!', addon_icon, 3000)
+        xbmc.sleep(4000)
         os._exit(1)
     else:
         return
@@ -168,10 +176,10 @@ def clean_backups():
             shutil.rmtree(file_path)
 
 def clear_packages_startup():
-    packages_dir = os.listdir(packages)
-    if len(packages_dir) == 0:
-        pass
-    else:
+    if not os.path.exists(packages):
+        return
+
+    if len(os.listdir(packages)) >= 10:
         clear_packages()
         
 def clear_packages():
@@ -187,16 +195,18 @@ def clear_packages():
             xbmc.log('Failed to delete %s. Reason: %s' % (file_path, e), xbmc.LOGINFO)
     xbmcgui.Dialog().notification(addon_name, str(file_count)+' ' + local_string(30046), addon_icon, 5000, sound=False)  # Packages Cleared
 
-def truncate_tables():
+def truncate_tables(Fresh=False):
     try:
         con = sqlite3.connect(addons_db)
         cursor = con.cursor()
-        cursor.execute('DELETE FROM addonlinkrepo;',)
-        cursor.execute('DELETE FROM addons;',)
-        cursor.execute('DELETE FROM package;',)
-        cursor.execute('DELETE FROM repo;',)
-        cursor.execute('DELETE FROM update_rules;',)
-        cursor.execute('DELETE FROM version;',)
+        cursor.execute('UPDATE repo SET version = ?, checksum = ?, lastcheck = ? WHERE addonID = ?',('', '', '', 'repository.xbmc.org'))
+        if Fresh:
+            cursor.execute('DELETE FROM addonlinkrepo;',)
+            cursor.execute('DELETE FROM addons;',)
+            cursor.execute('DELETE FROM package;',)
+            cursor.execute('DELETE FROM repo;',)
+            cursor.execute('DELETE FROM version;',)
+            cursor.execute('DELETE FROM update_rules;',)
         con.commit()
     except sqlite3.Error as e:
         xbmc.log('There was an error reading the database - %s' %e, xbmc.LOGINFO)
