@@ -6,11 +6,12 @@ import xbmc
 import xbmcvfs
 import xbmcaddon
 import xbmcgui
+import platform
 from uservar import buildfile
 from urllib.request import Request, urlopen
 from .parser import XmlParser, TextParser
 
-addon_id = xbmcaddon.Addon().getAddonInfo('id')
+addon_id        = xbmcaddon.Addon().getAddonInfo('id')
 addon           = xbmcaddon.Addon(addon_id)
 addon_info      = addon.getAddonInfo
 addon_version   = addon_info('version')
@@ -53,6 +54,11 @@ notify_file = os.path.join(addon_profile,'notify.txt')
 texts_path = os.path.join(resources, 'texts/')
 authorize = texts_path + 'authorize.json'
 installed_date = str(datetime.now())[:-7]
+
+#Build Stats
+build_ver = xbmc.getInfoLabel('System.BuildVersion')
+build_date = xbmc.getInfoLabel('System.BuildDate')
+sys_arch = platform.architecture()[0]
 
 #Advanced Settings Paths
 advancedsettings_xml =  os.path.join(user_path, 'advancedsettings.xml')
@@ -132,3 +138,52 @@ def get_version():
            break
     return version, url
 UPDATE_VERSION, BUILD_URL = get_version()
+
+# Build Menu - Total Build Count
+def count_builds():
+       response = ''
+       try:
+           response = get_page(buildfile)
+       except:
+           name = None
+       name = ''
+       current_list = []
+       xml = XmlParser(response)
+       builds = xml.parse_builds()
+       for build in builds:
+           if not build.get('version'):
+               pass
+           else:
+               if str(xbmc.getInfoLabel("System.BuildVersion")[:2]) in build.get('kodi'):
+                    current_list.append(build.get('name'))
+                    name = len(current_list)
+       return name
+NUM_BUILDS = count_builds()
+
+def get_os():
+    platforms = {
+        'System.Platform.Windows': 'Windows',
+        'System.Platform.Android': 'Android',
+        'System.Platform.Linux': 'Linux',
+        'System.Platform.OSX': 'macOS',
+        'System.Platform.IOS': 'iOS'
+    }
+
+    for condition, name in platforms.items():
+        if xbmc.getCondVisibility(condition):
+            return name
+
+    return 'Unknown'
+os_name = get_os()
+
+def get_kodi_codename():
+    try:
+        codename = int(xbmc.getInfoLabel('System.BuildVersion').split('.')[0])
+        return {
+            20: 'Nexus',
+            21: 'Omega',
+            22: 'Piers'
+        }.get(codename, 'Unknown')
+    except:
+        return 'Unknown'
+code_name = get_kodi_codename()
