@@ -11,7 +11,9 @@ from .authorize import authorize_menu, authorize_submenu
 from .build_install import build_install
 from .maintenance import fresh_start, clear_packages, clear_thumbnails, advanced_settings
 from .whitelist import get_whitelist
-from .addonvar import addon, addon_name, addon_icon, gui_save_default, gui_save_user, advancedsettings_k20, advancedsettings_k21, advancedsettings_k22, UPDATE_VERSION, CURRENT_BUILD, BUILD_URL
+from .addonvar import (addon, addon_name, addon_icon, gui_save_default, gui_save_user,
+                       advancedsettings_k20, advancedsettings_k21, advancedsettings_k22,
+                       UPDATE_VERSION, CURRENT_BUILD, BUILD_URL)
 from .save_data import restore_gui, restore_skin, backup_gui_skin
 from .backup_restore import backup_build, restore_menu, restore_build, get_backup_folder, reset_backup_folder
 
@@ -34,8 +36,10 @@ def router(paramstring):
     
     xbmcplugin.setContent(HANDLE, 'files')
 
-    if mode is None:
+    if not mode or mode == 'None':
         main_menu()
+        xbmcplugin.endOfDirectory(HANDLE)
+        return
     
     elif mode == 1:
         build_menu()
