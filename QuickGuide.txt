@@ -1,19 +1,57 @@
-Simple 19 Wizard
+<><><> Simple Wizard <><><>
 
-This is a lightweight build installer with Fresh Start option for use with Kodi 19. There's also a small set of maintenance tools. It uses xml for build file. There is a template for that named builds.xml located in the resources folder. It's important to keep the structure of the xml the same. Please report any bugs and feature requests to @slamious on Telegram/Twitter.
+Simple Wizard is a lightweight build installer for Kodi 19 and later. It includes a Fresh Start option along with a small collection of maintenance tools.
 
-Quick Guide:
+Build information can be stored in either an XML, JSON or txt file. Template files (`builds.xml`, `builds.json`, `builds.txt`) are included in the `resources/texts/` folder. If using XML, be sure to preserve the existing tag structure. If using JSON or txt, keep the dictionary structure the same.
 
-1. Unzip plugin.program.simple19wizard.zip
+Please report any bugs or feature requests to **@slamious** on Telegram or X (Twitter).
 
-2. Rename the plugin.program.simple19wizard folder to your desired plugin name ie plugin.program.my19wizard.
 
-3. Open the addon.xml file and change the plugin ID to match the foldername you created in step 2. You should also change the Name, Provider-name, Summary and Description to whatever you want. Save.
 
-4. Replace the icon.png and fanart.jpg files in the resources folder with your own. Keep the filenames the same.
+<><><> Quick Start Guide <><><>
 
-5. Open the builds.xml or builds.json template file located in the resources folder and replace the template info with that of your build info. You can add or remove builds just be sure to keep the structure of the xml tags (or dict for json) the same. You can rename this file if you wish. Host the file. It doesn't matter if you use xml or json. XML is likely the more user friendly while json is more efficient. Choose whichever you are more comfortable using. 
+1. Extract `plugin.program.simplewizard.zip`.
 
-6. Open the uservar.py file and change the build file url to the url of your hosted build xml file. Save.
+2. Rename the `plugin.program.simplewizard` folder to your desired plugin ID.
 
-7. Zip the plugin.program.my19wizard folder and install in Kodi. 
+   Example: `plugin.program.mywizard`
+
+3. Open `addon.xml` and change the add-on ID to match the folder name you created in Step 2. 
+
+   You should also update the following fields:
+   * Name
+   * Provider Name
+   * Summary
+   * Description
+
+   - Save the file when finished.
+
+4. Replace `icon.png` and `fanart.jpg` in the `resources` folder with your own artwork. Keep the filenames the same.
+
+5. Open either `builds.xml`, `builds.json`, `builds.txt` in the `resources/texts/` folder and replace the template information with your own build details.
+
+   - You may add or remove builds as needed, but be sure to preserve the XML tag structure or JSON dictionary structure. You may also rename the file if desired.
+   - Host the completed file on your web server.
+
+6. Open `uservar.py` and change the build file URL to the URL of your hosted XML, JSON or txt build file. Save the file.
+
+7. Zip your renamed plugin folder (Example, `plugin.program.mywizard.zip`) and install it in Kodi.
+
+
+
+<><><> Changelog Guide <><><>
+
+1. Name the changelog file:
+
+   Example: `build_name.txt`
+
+   - Replace `build_name` with the exact name of your build as it appears in your XML, JSON or txt build file.
+
+2. Upload the changelog file to a directory on your web server.
+
+3. In `uservar.py`, set the changelog directory URL. The URL must end with a forward slash (/).
+
+   Example: `http://my_changelog_directory/`
+
+   - Once a build has been installed, the wizard automatically matches the build name against the changelog files in the changelog directory on your web server and retrieves the corresponding changelog for that build.
+
