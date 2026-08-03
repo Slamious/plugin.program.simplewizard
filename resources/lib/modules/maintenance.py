@@ -7,7 +7,7 @@ import xbmcgui
 from .skinSwitch import swapSkins
 from .addonvar import (currSkin, user_path, db_path, addon_name, addon_icon,
                        addons_db, textures_db, advancedsettings_xml, dialog,
-                       dp, xbmcPath, packages, setting_set, local_string)
+                       dp, xbmcPath, packages, setting_set, setting, local_string)
 from .whitelist import EXCLUDES_INSTALL, EXCLUDES_FRESH
 
 def purge_db(db):
@@ -179,7 +179,10 @@ def clear_packages_startup():
     if not os.path.exists(packages):
         return
 
-    if len(os.listdir(packages)) >= 10:
+    count = len(os.listdir(packages))
+    user_setting = int(setting('autoclearpackages'))
+
+    if ((user_setting == 1 and count >= 1) or (user_setting == 2 and count >= 10) or (user_setting == 3 and count >= 20)):
         clear_packages()
         
 def clear_packages():
