@@ -3,7 +3,7 @@
 		{
 			"name": "Build 1",
 			"version": "1.0",
-			"kodi": "K21",
+			"kodi": "Enter supported Kodi version: K20, K21, or K22",
 			"url": "http://",
 			"icon": "http://",
 			"fanart": "http://",
@@ -13,7 +13,7 @@
 		{
 			"name": "Build 2",
 			"version": "1.0",
-			"kodi": "K21",
+			"kodi": "Enter supported Kodi version: K20, K21, or K22",
 			"url": "http://",
 			"icon": "http://",
 			"fanart": "http://",
